@@ -1,7 +1,8 @@
-package me.l3m4rk.test
+package me.l3m4rk.test.presentation
 
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
+import me.l3m4rk.test.R
 
 class MainActivity : DaggerAppCompatActivity() {
 
