@@ -1,39 +1,47 @@
 package me.l3m4rk.test.presentation
 
-import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.android.support.DaggerAppCompatActivity
 import me.l3m4rk.test.R
-import me.l3m4rk.test.presentation.albums.saved.SavedAlbumsFragment
-import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
-import me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment
-import timber.log.Timber
 
-class MainActivity : DaggerAppCompatActivity(),
-    SavedAlbumsFragment.OnFragmentInteractionListener,
-    SearchArtistsFragment.OnFragmentInteractionListener,
-    TopAlbumsFragment.OnFragmentInteractionListener {
+class MainActivity : DaggerAppCompatActivity() {
+
+    private val navController: NavController by lazy { findNavController(R.id.nav_host_fragment) }
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, SavedAlbumsFragment.newInstance())
-                .commit()
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            menu?.findItem(R.id.searchArtistsFragment)?.isVisible = destination.id == R.id.savedAlbumsFragment
         }
+
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController)
     }
 
-    override fun onArtistPicked() {
-
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    override fun onFragmentInteraction(uri: Uri) {
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
-    override fun onAlbumSelected() {
-        Timber.i("onAlbumSelected clicked!")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.saved_albums, menu)
+        this.menu = menu
+        return super.onCreateOptionsMenu(menu)
     }
+
 }

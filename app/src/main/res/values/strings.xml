@@ -7,4 +7,6 @@
 
     <string name="top_albums_title">Top Albums</string>
 
+    <string name="action_search">Search</string>
+
 </resources>
