@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Sound</string>
+
+    <string name="saved_albums_title">Saved Albums</string>
+
+    <string name="search_artists_title">Search artists</string>
+
+    <string name="top_albums_title">Top Albums</string>
+
 </resources>
