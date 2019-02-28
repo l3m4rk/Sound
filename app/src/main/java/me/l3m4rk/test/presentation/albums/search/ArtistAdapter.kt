@@ -35,7 +35,7 @@ class ArtistAdapter
 
         holder.nameView.text = item.name
         holder.imageView.contentDescription = item.name
-        Glide.with(holder.imageView).load(item.imageUrl).centerCrop().into(holder.imageView)
+        Glide.with(holder.imageView).load(item.imageUrl).placeholder(R.color.progress).centerCrop().into(holder.imageView)
     }
 }
 
