@@ -59,8 +59,12 @@ data class SearchResponse(val results: Results)
 data class Results(
     val totalResults: Int,
     val itemPerPage: Int,
-    @SerializedName("artistmaches") val artists: List<ArtistDTO>
-)
+    @SerializedName("artistmatches") val matches: Matches
+) {
+    data class Matches(
+        val artist: List<ArtistDTO>
+    )
+}
 
 data class ArtistDTO(
     val name: String,

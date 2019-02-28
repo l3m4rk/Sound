@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import me.l3m4rk.test.di.LastFmApi
 import me.l3m4rk.test.presentation.common.ViewState
+import me.l3m4rk.test.presentation.models.ArtistVO
 import timber.log.Timber
 
 class SearchArtistsViewModel(
@@ -21,18 +22,38 @@ class SearchArtistsViewModel(
     val uiState: LiveData<ViewState>
         get() = _uiState
 
+    init {
+        _uiState.value = ViewState.Initial
+    }
+
     fun searchArtists(query: String) {
         disposables.clear()
         disposables += lastFmApi.searchArtists(query)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnSubscribe { progress.visibility = View.VISIBLE }
-//            .doOnError { progress.visibility = View.GONE }
-            .subscribe({
-                Timber.i(it.toString())
-            }, {
+            .observeOn(Schedulers.computation())
+            .map {
+                it.results.matches.artist
+            }
+            .map {
+                it.map { dto ->
+                    ArtistVO(
+                        name = dto.name,
+                        id = dto.id,
+                        listeners = dto.listeners,
+                        imageUrl = dto.image.find { it.size == "large" }?.url ?: ""
+                    )
+                }
+            }
+            .map { ViewState.Success(it) as ViewState }
+            .onErrorReturn {
                 Timber.w(it)
-            })
+                ViewState.Error("Something goes wrong!")
+            }
+            .startWith(ViewState.Progress)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                _uiState.value = it
+            }
 
     }
 
