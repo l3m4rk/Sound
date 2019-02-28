@@ -5,12 +5,30 @@
              android:layout_height="match_parent"
              tools:context=".presentation.albums.top.TopAlbumsFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/albumsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_album"
+    />
+
     <TextView
-            android:id="@+id/nameView"
+            android:id="@+id/messageView"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center"
+            tools:text="You have no albums"
+    />
+
+    <ProgressBar
+            android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:text="Top Albums"
     />
 
 </FrameLayout>

@@ -1,14 +1,12 @@
 package me.l3m4rk.test.presentation.common
 
-import me.l3m4rk.test.presentation.models.ArtistVO
+sealed class ViewState<out T> {
+    class Success<T>(val data: T) : ViewState<T>()
 
-sealed class ViewState {
-    class Success(val artists: List<ArtistVO>) : ViewState()
+    class Error<out T>(val message: String) : ViewState<T>()
 
-    class Error(val message: String) : ViewState()
+    class Progress<out T> : ViewState<T>()
 
-    object Progress : ViewState()
-
-    object Initial : ViewState()
+    class Initial<out T> : ViewState<T>()
 }
 

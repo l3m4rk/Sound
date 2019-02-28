@@ -9,6 +9,7 @@ import me.l3m4rk.test.di.common.viewModel
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
 import me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment
+import me.l3m4rk.test.presentation.albums.top.TopAlbumsViewModel
 
 @Module
 abstract class AlbumsModule {
@@ -30,6 +31,16 @@ abstract class AlbumsModule {
             fragment: SearchArtistsFragment
         ): SearchArtistsViewModel {
             return fragment.viewModel { SearchArtistsViewModel(lastFmApi) }
+        }
+
+        @Provides
+        @Reusable
+        @JvmStatic
+        fun provideTopAlbumsViewModel(
+            lastFmApi: LastFmApi,
+            fragment: TopAlbumsFragment
+        ): TopAlbumsViewModel {
+            return fragment.viewModel { TopAlbumsViewModel(lastFmApi) }
         }
     }
 

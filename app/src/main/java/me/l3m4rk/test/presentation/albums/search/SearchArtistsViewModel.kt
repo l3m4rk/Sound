@@ -18,12 +18,12 @@ class SearchArtistsViewModel(
 
     private val disposables = CompositeDisposable()
 
-    private val _uiState = MutableLiveData<ViewState>()
-    val uiState: LiveData<ViewState>
+    private val _uiState = MutableLiveData<ViewState<List<ArtistVO>>>()
+    val uiState: LiveData<ViewState<List<ArtistVO>>>
         get() = _uiState
 
     init {
-        _uiState.value = ViewState.Initial
+        _uiState.value = ViewState.Initial()
     }
 
     fun searchArtists(query: String) {
@@ -39,17 +39,17 @@ class SearchArtistsViewModel(
                     ArtistVO(
                         name = dto.name,
                         id = dto.id,
-                        listeners = dto.listeners,
-                        imageUrl = dto.image.find { it.size == "large" }?.url ?: ""
+                        listeners = dto.listeners ?: 0,
+                        imageUrl = dto.image?.find { it.size == "large" }?.url ?: ""
                     )
                 }
             }
-            .map { ViewState.Success(it) as ViewState }
+            .map { ViewState.Success(it) as ViewState<List<ArtistVO>> }
             .onErrorReturn {
                 Timber.w(it)
                 ViewState.Error("Something goes wrong!")
             }
-            .startWith(ViewState.Progress)
+            .startWith(ViewState.Progress())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 _uiState.value = it

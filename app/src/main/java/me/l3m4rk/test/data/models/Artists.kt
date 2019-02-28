@@ -16,13 +16,13 @@ data class Results(
 
 data class ArtistDTO(
     val name: String,
-    val listeners: Long,
+    val listeners: Long?,
     @SerializedName("mbid") val id: String,
     val url: String,
-    val image: List<Image>
-) {
-    data class Image(
-        @SerializedName("#text") val url: String,
-        val size: String
-    )
-}
+    val image: List<ImageDTO>?
+)
+
+data class ImageDTO(
+    @SerializedName("#text") val url: String,
+    val size: String
+)
