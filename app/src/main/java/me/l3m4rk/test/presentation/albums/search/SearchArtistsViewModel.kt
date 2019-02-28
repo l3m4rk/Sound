@@ -7,7 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
-import me.l3m4rk.test.di.LastFmApi
+import me.l3m4rk.test.data.api.LastFmApi
 import me.l3m4rk.test.presentation.common.ViewState
 import me.l3m4rk.test.presentation.models.ArtistVO
 import timber.log.Timber

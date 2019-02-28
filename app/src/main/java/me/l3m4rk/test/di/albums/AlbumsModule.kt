@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import dagger.android.ContributesAndroidInjector
-import me.l3m4rk.test.di.LastFmApi
+import me.l3m4rk.test.data.api.LastFmApi
 import me.l3m4rk.test.di.common.viewModel
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
