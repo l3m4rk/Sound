@@ -8,6 +8,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerFragment
@@ -68,7 +69,8 @@ class SearchArtistsFragment : DaggerFragment() {
         artistsList.layoutManager = LinearLayoutManager(context)
         artistsList.itemAnimator = DefaultItemAnimator()
         artistsAdapter.itemClick = {
-            showErrorView(it.toString())
+            val action = SearchArtistsFragmentDirections.actionTopAlbums(it.name)
+            findNavController().navigate(action)
         }
         artistsList.adapter = artistsAdapter
     }

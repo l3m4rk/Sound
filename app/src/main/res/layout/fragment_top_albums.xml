@@ -6,9 +6,11 @@
              tools:context=".presentation.albums.top.TopAlbumsFragment">
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Top Albums"
+            android:id="@+id/nameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="Top Albums"
     />
 
 </FrameLayout>

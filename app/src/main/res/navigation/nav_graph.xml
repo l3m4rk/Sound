@@ -17,10 +17,17 @@
               android:name="me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment"
               android:label="@string/search_artists_title"
               tools:layout="@layout/fragment_search_artists"
-    />
+    >
+        <action android:id="@+id/actionTopAlbums"
+                app:destination="@id/topAlbumsFragment" app:popUpTo="@+id/searchArtistsFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment android:id="@+id/topAlbumsFragment"
               android:name="me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment"
               android:label="@string/top_albums_title"
               tools:layout="@layout/fragment_top_albums"
-    />
+    >
+        <argument android:name="name" app:argType="string"/>
+    </fragment>
 </navigation>
