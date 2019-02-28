@@ -45,7 +45,11 @@ class SearchArtistsFragment : DaggerFragment() {
                 is ViewState.Success -> {
                     progress.visibility = GONE
                     artistsList.visibility = VISIBLE
-                    artistsAdapter.submitList(it.artists)
+                    if (it.artists.isEmpty()) {
+                        showErrorView("List is empty")
+                    } else {
+                        artistsAdapter.submitList(it.artists)
+                    }
                 }
                 is ViewState.Progress -> {
                     progress.visibility = VISIBLE
@@ -63,6 +67,9 @@ class SearchArtistsFragment : DaggerFragment() {
 
         artistsList.layoutManager = LinearLayoutManager(context)
         artistsList.itemAnimator = DefaultItemAnimator()
+        artistsAdapter.itemClick = {
+            showErrorView(it.toString())
+        }
         artistsList.adapter = artistsAdapter
     }
 

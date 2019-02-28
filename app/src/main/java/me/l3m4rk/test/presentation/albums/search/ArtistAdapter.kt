@@ -17,6 +17,8 @@ import javax.inject.Inject
 class ArtistAdapter
 @Inject constructor() : ListAdapter<ArtistVO, ArtistViewHolder>(DIFF_CALLBACK) {
 
+    var itemClick: ((ArtistVO) -> Unit)? = null
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ArtistVO>() {
             override fun areItemsTheSame(oldItem: ArtistVO, newItem: ArtistVO) = oldItem.id == newItem.id
@@ -32,10 +34,12 @@ class ArtistAdapter
 
     override fun onBindViewHolder(holder: ArtistViewHolder, position: Int) {
         val item = getItem(position)
-
         holder.nameView.text = item.name
         holder.imageView.contentDescription = item.name
-        Glide.with(holder.imageView).load(item.imageUrl).placeholder(R.color.progress).centerCrop().into(holder.imageView)
+        Glide.with(holder.imageView).load(item.imageUrl).placeholder(R.color.progress).centerCrop()
+            .into(holder.imageView)
+
+        holder.itemView.setOnClickListener { itemClick?.invoke(item) }
     }
 }
 
