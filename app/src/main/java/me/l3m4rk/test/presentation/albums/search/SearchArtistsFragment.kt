@@ -1,13 +1,11 @@
 package me.l3m4rk.test.presentation.albums.search
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import dagger.android.support.DaggerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_search_artists.*
 import me.l3m4rk.test.R
 import me.l3m4rk.test.di.LastFmApi
+import me.l3m4rk.test.presentation.common.hideKeyboard
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -41,8 +40,7 @@ class SearchArtistsFragment : DaggerFragment() {
 
         searchButton.setOnClickListener {
             testNetworkRequest()
-            val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(it.windowToken, 0)
+            it.hideKeyboard()
         }
 
     }
