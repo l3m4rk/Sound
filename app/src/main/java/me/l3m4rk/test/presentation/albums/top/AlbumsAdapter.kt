@@ -14,6 +14,8 @@ import javax.inject.Inject
 class AlbumsAdapter
 @Inject constructor() : ListAdapter<AlbumVO, AlbumViewHolder>(DIFF_CALLBACK) {
 
+    var itemClick: ((AlbumVO) -> Unit)? = null
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<AlbumVO>() {
             override fun areItemsTheSame(oldItem: AlbumVO, newItem: AlbumVO): Boolean =
@@ -42,6 +44,8 @@ class AlbumsAdapter
             .placeholder(R.color.progress)
             .centerCrop()
             .into(holder.itemView.albumImage)
+
+        holder.itemView.setOnClickListener { itemClick?.invoke(item) }
     }
 }
 

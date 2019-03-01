@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,6 +27,11 @@ class TopAlbumsFragment : DaggerFragment() {
     @Inject
     lateinit var albumsAdapter: AlbumsAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.loadTopAlbums(args.name)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +49,6 @@ class TopAlbumsFragment : DaggerFragment() {
 
         setupList()
 
-        viewModel.loadTopAlbums(args.name)
     }
 
     private fun handleScreenState(state: ViewState<List<AlbumVO>>) {
@@ -73,6 +78,11 @@ class TopAlbumsFragment : DaggerFragment() {
 
     private fun setupList() {
         albumsList.adapter = albumsAdapter
+        albumsAdapter.itemClick = {
+            //todo open album details
+            val action = TopAlbumsFragmentDirections.actionAlbumDetails()
+            findNavController().navigate(action)
+        }
         albumsList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         albumsList.itemAnimator = DefaultItemAnimator()
         albumsList.layoutManager = LinearLayoutManager(context)

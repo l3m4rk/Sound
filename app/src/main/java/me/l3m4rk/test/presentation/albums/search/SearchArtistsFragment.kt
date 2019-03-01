@@ -70,8 +70,6 @@ class SearchArtistsFragment : DaggerFragment() {
     }
 
     private fun showError(message: String) {
-        //TODO add error view
-        //TODO add retry functionality
         messageView.visibility = VISIBLE
         messageView.text = message
     }

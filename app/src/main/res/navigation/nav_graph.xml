@@ -26,8 +26,16 @@
     <fragment android:id="@+id/topAlbumsFragment"
               android:name="me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment"
               android:label="@string/top_albums_title"
-              tools:layout="@layout/fragment_top_albums"
-    >
+              tools:layout="@layout/fragment_top_albums">
         <argument android:name="name" app:argType="string"/>
+        <action android:id="@+id/actionAlbumDetails"
+                app:destination="@id/actionAlbumDetails" app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" app:popUpTo="@+id/topAlbumsFragment"/>
     </fragment>
+    <fragment android:id="@+id/actionAlbumDetails"
+              android:name="me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment"
+              android:label="@string/album_details_title"
+              tools:layout="@layout/fragment_album_details"
+    />
 </navigation>
