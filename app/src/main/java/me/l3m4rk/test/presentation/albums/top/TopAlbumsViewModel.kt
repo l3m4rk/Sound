@@ -8,10 +8,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import me.l3m4rk.test.data.api.LastFmApi
+import me.l3m4rk.test.presentation.common.ErrorMessageFactory
 import me.l3m4rk.test.presentation.common.ViewState
 import timber.log.Timber
 
-class TopAlbumsViewModel(private val api: LastFmApi) : ViewModel() {
+class TopAlbumsViewModel(
+    private val api: LastFmApi,
+    private val messageFactory: ErrorMessageFactory
+) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
@@ -34,10 +38,8 @@ class TopAlbumsViewModel(private val api: LastFmApi) : ViewModel() {
                 }
             }
             .map { ViewState.Success(it) as ViewState<List<AlbumVO>> }
-            .onErrorReturn {
-                Timber.w(it)
-                ViewState.Error(it.localizedMessage)
-            }
+            .doOnError { Timber.w(it) }
+            .onErrorReturn { ViewState.Error(messageFactory.createMessage(it)) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 _screenState.value = it

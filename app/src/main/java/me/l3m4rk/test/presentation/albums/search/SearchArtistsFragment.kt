@@ -6,7 +6,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -45,20 +44,21 @@ class SearchArtistsFragment : DaggerFragment() {
             when (it) {
                 is ViewState.Success -> {
                     progress.visibility = GONE
-                    artistsList.visibility = VISIBLE
                     if (it.data.isEmpty()) {
-                        showErrorView("List is empty")
+                        showError(getString(R.string.search_artists_no_data))
                     } else {
+                        artistsList.visibility = VISIBLE
                         artistsAdapter.submitList(it.data)
                     }
                 }
                 is ViewState.Progress -> {
                     progress.visibility = VISIBLE
                     artistsList.visibility = GONE
+                    messageView.visibility = GONE
                 }
                 is ViewState.Error -> {
                     progress.visibility = GONE
-                    showErrorView(it.message)
+                    showError(it.message)
                 }
                 is ViewState.Initial -> {
                     progress.visibility = GONE
@@ -66,6 +66,17 @@ class SearchArtistsFragment : DaggerFragment() {
             }
         })
 
+        setupList()
+    }
+
+    private fun showError(message: String) {
+        //TODO add error view
+        //TODO add retry functionality
+        messageView.visibility = VISIBLE
+        messageView.text = message
+    }
+
+    private fun setupList() {
         artistsList.layoutManager = LinearLayoutManager(context)
         artistsList.itemAnimator = DefaultItemAnimator()
         artistsAdapter.itemClick = {
@@ -73,12 +84,6 @@ class SearchArtistsFragment : DaggerFragment() {
             findNavController().navigate(action)
         }
         artistsList.adapter = artistsAdapter
-    }
-
-    private fun showErrorView(message: String) {
-        //TODO add error view
-        //TODO add retry functionality
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
 }

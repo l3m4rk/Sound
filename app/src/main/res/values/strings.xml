@@ -6,6 +6,7 @@
     <string name="search_artists_title">Search artists</string>
     <string name="search_artists_button_text">Search</string>
     <string name="search_artists_hint">Enter artist name</string>
+    <string name="search_artists_no_data">We haven\'t found anything!</string>
 
     <string name="top_albums_title">Top Albums</string>
 

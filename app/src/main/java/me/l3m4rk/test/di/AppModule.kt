@@ -1,6 +1,7 @@
 package me.l3m4rk.test.di
 
 import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 
@@ -8,6 +9,6 @@ import dagger.Provides
 class AppModule {
 
     @Provides
-    fun provideContext(app: Application) = app.applicationContext
+    fun provideContext(app: Application): Context = app.applicationContext
 
 }

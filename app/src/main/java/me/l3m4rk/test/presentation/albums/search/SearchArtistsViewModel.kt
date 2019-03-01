@@ -8,12 +8,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import me.l3m4rk.test.data.api.LastFmApi
+import me.l3m4rk.test.presentation.common.ErrorMessageFactory
 import me.l3m4rk.test.presentation.common.ViewState
 import me.l3m4rk.test.presentation.models.ArtistVO
 import timber.log.Timber
 
 class SearchArtistsViewModel(
-    private val lastFmApi: LastFmApi
+    private val lastFmApi: LastFmApi,
+    private val messageFactory: ErrorMessageFactory
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
@@ -31,9 +33,7 @@ class SearchArtistsViewModel(
         disposables += lastFmApi.searchArtists(query)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
-            .map {
-                it.results.matches.artist
-            }
+            .map { it.results.matches.artist }
             .map {
                 it.map { dto ->
                     ArtistVO(
@@ -45,16 +45,13 @@ class SearchArtistsViewModel(
                 }
             }
             .map { ViewState.Success(it) as ViewState<List<ArtistVO>> }
-            .onErrorReturn {
-                Timber.w(it)
-                ViewState.Error("Something goes wrong!")
-            }
+            .doOnError { Timber.w(it) }
+            .onErrorReturn { ViewState.Error(messageFactory.createMessage(it)) }
             .startWith(ViewState.Progress())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 _uiState.value = it
             }
-
     }
 
     override fun onCleared() {
