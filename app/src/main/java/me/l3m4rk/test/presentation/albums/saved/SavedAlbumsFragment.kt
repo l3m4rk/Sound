@@ -22,9 +22,4 @@ class SavedAlbumsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_saved_albums, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        activity?.title = getString(R.string.saved_albums_title)
-    }
-
 }

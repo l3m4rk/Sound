@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
-import me.l3m4rk.test.data.api.LastFmApi
+import me.l3m4rk.test.data.repositories.AlbumsRepository
 import me.l3m4rk.test.presentation.common.ErrorMessageFactory
 import me.l3m4rk.test.presentation.common.ViewState
 import me.l3m4rk.test.presentation.models.ArtistVO
 import timber.log.Timber
 
 class SearchArtistsViewModel(
-    private val lastFmApi: LastFmApi,
+    private val repository: AlbumsRepository,
     private val messageFactory: ErrorMessageFactory
 ) : ViewModel() {
 
@@ -30,20 +29,7 @@ class SearchArtistsViewModel(
 
     fun searchArtists(query: String) {
         disposables.clear()
-        disposables += lastFmApi.searchArtists(query)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.computation())
-            .map { it.results.matches.artist }
-            .map {
-                it.map { dto ->
-                    ArtistVO(
-                        name = dto.name,
-                        id = dto.id,
-                        listeners = dto.listeners ?: 0,
-                        imageUrl = dto.image?.find { it.size == "large" }?.url ?: ""
-                    )
-                }
-            }
+        disposables += repository.searchArtists(query)
             .map { ViewState.Success(it) as ViewState<List<ArtistVO>> }
             .doOnError { Timber.w(it) }
             .onErrorReturn { ViewState.Error(messageFactory.createMessage(it)) }

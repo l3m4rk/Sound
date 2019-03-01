@@ -1,10 +1,12 @@
 package me.l3m4rk.test.di.albums
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import dagger.android.ContributesAndroidInjector
-import me.l3m4rk.test.data.api.LastFmApi
+import me.l3m4rk.test.data.repositories.AlbumsRepository
+import me.l3m4rk.test.data.repositories.AlbumsRepositoryImpl
 import me.l3m4rk.test.di.common.viewModel
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
@@ -25,6 +27,9 @@ abstract class AlbumsModule {
     @ContributesAndroidInjector
     abstract fun bindAlbumDetailsFragment(): AlbumDetailsFragment
 
+    @Binds
+    abstract fun bindRepository(impl: AlbumsRepositoryImpl): AlbumsRepository
+
     @Module
     companion object {
 
@@ -32,22 +37,22 @@ abstract class AlbumsModule {
         @Reusable
         @JvmStatic
         fun provideSearchViewModel(
-            lastFmApi: LastFmApi,
+            repository: AlbumsRepository,
             messageFactory: ErrorMessageFactory,
             fragment: SearchArtistsFragment
         ): SearchArtistsViewModel {
-            return fragment.viewModel { SearchArtistsViewModel(lastFmApi, messageFactory) }
+            return fragment.viewModel { SearchArtistsViewModel(repository, messageFactory) }
         }
 
         @Provides
         @Reusable
         @JvmStatic
         fun provideTopAlbumsViewModel(
-            lastFmApi: LastFmApi,
+            repository: AlbumsRepository,
             messageFactory: ErrorMessageFactory,
             fragment: TopAlbumsFragment
         ): TopAlbumsViewModel {
-            return fragment.viewModel { TopAlbumsViewModel(lastFmApi, messageFactory) }
+            return fragment.viewModel { TopAlbumsViewModel(repository, messageFactory) }
         }
     }
 

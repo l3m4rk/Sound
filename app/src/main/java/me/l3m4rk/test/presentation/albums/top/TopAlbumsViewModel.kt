@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
-import me.l3m4rk.test.data.api.LastFmApi
+import me.l3m4rk.test.data.repositories.AlbumsRepository
 import me.l3m4rk.test.presentation.common.ErrorMessageFactory
 import me.l3m4rk.test.presentation.common.ViewState
 import timber.log.Timber
 
 class TopAlbumsViewModel(
-    private val api: LastFmApi,
+    private val repository: AlbumsRepository,
     private val messageFactory: ErrorMessageFactory
 ) : ViewModel() {
 
@@ -24,19 +23,7 @@ class TopAlbumsViewModel(
         get() = _screenState
 
     fun loadTopAlbums(artist: String) {
-        disposables += api.fetchTopAlbums(artist)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.computation())
-            .map { it.topAlbums.album }
-            .map {
-                it.map { dto ->
-                    AlbumVO(
-                        name = dto.name,
-                        listeners = dto.playCount.toString(),
-                        imageUrl = dto.image.find { it.size == "large" }?.url ?: ""
-                    )
-                }
-            }
+        disposables += repository.getTopAlbumsByArtist(artist)
             .map { ViewState.Success(it) as ViewState<List<AlbumVO>> }
             .doOnError { Timber.w(it) }
             .onErrorReturn { ViewState.Error(messageFactory.createMessage(it)) }
