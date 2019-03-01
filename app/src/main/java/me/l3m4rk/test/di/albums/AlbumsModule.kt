@@ -8,6 +8,8 @@ import dagger.android.ContributesAndroidInjector
 import me.l3m4rk.test.data.repositories.AlbumsRepository
 import me.l3m4rk.test.data.repositories.AlbumsRepositoryImpl
 import me.l3m4rk.test.di.common.viewModel
+import me.l3m4rk.test.domain.albums.search.SearchArtistUseCaseImpl
+import me.l3m4rk.test.domain.albums.search.SearchArtistsUseCase
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
@@ -30,6 +32,9 @@ abstract class AlbumsModule {
     @Binds
     abstract fun bindRepository(impl: AlbumsRepositoryImpl): AlbumsRepository
 
+    @Binds
+    abstract fun bindSearchArtistsUseCase(impl: SearchArtistUseCaseImpl): SearchArtistsUseCase
+
     @Module
     companion object {
 
@@ -37,11 +42,10 @@ abstract class AlbumsModule {
         @Reusable
         @JvmStatic
         fun provideSearchViewModel(
-            repository: AlbumsRepository,
-            messageFactory: ErrorMessageFactory,
+            searchArtistsUseCase: SearchArtistsUseCase,
             fragment: SearchArtistsFragment
         ): SearchArtistsViewModel {
-            return fragment.viewModel { SearchArtistsViewModel(repository, messageFactory) }
+            return fragment.viewModel { SearchArtistsViewModel(searchArtistsUseCase) }
         }
 
         @Provides
