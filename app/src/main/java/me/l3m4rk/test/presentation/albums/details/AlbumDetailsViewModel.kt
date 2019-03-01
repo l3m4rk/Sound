@@ -49,5 +49,11 @@ class AlbumDetailsViewModel(
         }
     }
 
+    fun deleteAlbum(album: String) {
+        disposables += saveItemUseCase.deleteAlbum(album)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { _uiState.value = ViewState.Info("Deleted!") }
+    }
+
 }
 

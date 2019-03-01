@@ -20,5 +20,6 @@ data class AlbumDetailsVO(
     val imageUrl: String,
     val listeners: String,
     val played: String,
-    val content: String
+    val content: String,
+    var fromDb: Boolean = false
 )

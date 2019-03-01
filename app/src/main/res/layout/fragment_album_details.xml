@@ -109,7 +109,18 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/contentView"
                     android:layout_marginTop="20dp"
-                    android:text="Save"
+                    android:text="@string/album_details_save_button_text"
+            />
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/deleteButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/contentView"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/album_details_delete_button_text"
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

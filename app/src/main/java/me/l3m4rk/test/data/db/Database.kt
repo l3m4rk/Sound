@@ -1,6 +1,7 @@
 package me.l3m4rk.test.data.db
 
 import androidx.room.*
+import io.reactivex.Maybe
 import io.reactivex.Observable
 
 @Database(entities = [Album::class], version = 1)
@@ -30,5 +31,8 @@ interface AlbumDao {
     fun insertAll(vararg albums: Album)
 
     @Query("SELECT * FROM album WHERE album_name = :album AND artist_name = :artist")
-    fun getItem(album: String, artist: String): Observable<Album>
+    fun getItem(album: String, artist: String): Maybe<Album>
+
+    @Query("DELETE FROM album WHERE album_name = :album")
+    fun deleteAlbum(album: String)
 }

@@ -11,16 +11,21 @@ interface SaveAlbumUseCase {
 
     fun saveAlbum(albumDetailsVO: AlbumDetailsVO): Completable
 
+    fun deleteAlbum(album: String): Completable
+
 }
 
 class SaveAlbumUseCaseImpl @Inject constructor(
     private val repository: AlbumsRepository,
     private val messageFactory: ErrorMessageFactory
 ) : SaveAlbumUseCase {
-
     override fun saveAlbum(albumDetailsVO: AlbumDetailsVO): Completable {
         return repository.saveAlbum(albumDetailsVO).doOnError {
             Timber.w(it)
         }
+    }
+
+    override fun deleteAlbum(album: String): Completable {
+        return repository.deleteAlbum(album)
     }
 }

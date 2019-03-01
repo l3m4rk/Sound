@@ -20,5 +20,7 @@
     <string name="album_details_no_content">No content</string>
     <string name="album_details_played_format">"Played %1$d times"</string>
     <string name="action_retry">Retry</string>
+    <string name="album_details_save_button_text">Save</string>
+    <string name="album_details_delete_button_text">Delete</string>
 
 </resources>

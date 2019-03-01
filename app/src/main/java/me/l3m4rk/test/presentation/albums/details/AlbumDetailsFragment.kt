@@ -53,6 +53,14 @@ class AlbumDetailsFragment : DaggerFragment() {
                         listenersView.text = listeners
                         contentView.text = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT)
                         playedView.text = played
+
+                        if (fromDb) {
+                            saveButton.visibility = GONE
+                            deleteButton.visibility = VISIBLE
+                        } else {
+                            saveButton.visibility = VISIBLE
+                            deleteButton.visibility = GONE
+                        }
                     }
                 }
                 is ViewState.Error -> {
@@ -65,14 +73,20 @@ class AlbumDetailsFragment : DaggerFragment() {
                 }
                 is ViewState.Initial -> {
                     //
+                    detailsView.visibility = GONE
+                    deleteButton.visibility = GONE
                 }
                 is ViewState.Info -> {
-                    Snackbar.make(root, it.message, Snackbar.LENGTH_INDEFINITE).show()
+                    saveButton.visibility = GONE
+                    deleteButton.visibility = VISIBLE
+                    snackbar = Snackbar.make(root, it.message, Snackbar.LENGTH_INDEFINITE)
+                    snackbar?.show()
                 }
             }
         })
 
         saveButton.setOnClickListener { viewModel.saveAlbum() }
+        deleteButton.setOnClickListener { viewModel.deleteAlbum(args.album) }
     }
 
     private fun showError(message: String) {

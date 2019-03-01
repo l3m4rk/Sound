@@ -24,6 +24,8 @@ interface AlbumsRepository {
 
     fun saveAlbum(albumDetailsVO: AlbumDetailsVO): Completable
 
+    fun deleteAlbum(album: String): Completable
+
     fun getSavedAlbums(): Observable<List<AlbumVO>>
 }
 
@@ -52,27 +54,53 @@ class AlbumsRepositoryImpl @Inject constructor(
     }
 
     override fun getAlbumInfo(artist: String, album: String): Observable<AlbumDetailsVO> {
-        //TODO setup load from db in case of no connection
-        return lastFmApi.getAlbumInfo(artist, album)
+
+        val fromDb = albumDatabase.albumDao()
+            .getItem(album, artist)
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .map {
+                AlbumDetailsVO(
+                    name = it.name,
+                    artist = it.artist,
+                    imageUrl = it.imageUrl,
+                    listeners = it.listeners,
+                    played = it.played,
+                    content = it.content,
+                    fromDb = true
+                )
+            }
+
+        val fromNetwork =  lastFmApi.getAlbumInfo(artist, album)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .map { it.album }
             .map(albumDetailsMapper::transform)
+
+
+        return fromDb.switchIfEmpty(fromNetwork.firstElement()).toObservable()
+
     }
 
-    override fun saveAlbum(vo: AlbumDetailsVO): Completable {
+    override fun saveAlbum(albumDetailsVO: AlbumDetailsVO): Completable {
         return Completable.fromAction {
             albumDatabase.albumDao().insertAll(
                 Album(
-                    name = vo.name,
-                    artist = vo.artist,
-                    imageUrl = vo.imageUrl,
-                    listeners = vo.listeners,
-                    content = vo.content,
-                    played = vo.played
+                    name = albumDetailsVO.name,
+                    artist = albumDetailsVO.artist,
+                    imageUrl = albumDetailsVO.imageUrl,
+                    listeners = albumDetailsVO.listeners,
+                    content = albumDetailsVO.content,
+                    played = albumDetailsVO.played
                 )
             )
         }.subscribeOn(Schedulers.io())
+    }
+
+    override fun deleteAlbum(album: String): Completable {
+        return Completable.fromAction { albumDatabase.albumDao().deleteAlbum(album) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
     }
 
     override fun getSavedAlbums(): Observable<List<AlbumVO>> {
@@ -86,7 +114,8 @@ class AlbumsRepositoryImpl @Inject constructor(
                     AlbumVO(
                         name = it.name,
                         imageUrl = it.imageUrl,
-                        listeners = it.listeners
+                        listeners = it.listeners,
+                        artist = it.artist
                     )
                 }
             }
