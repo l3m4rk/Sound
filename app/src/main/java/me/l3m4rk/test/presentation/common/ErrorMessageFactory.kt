@@ -12,9 +12,8 @@ class ErrorMessageFactory
 
     fun createMessage(t: Throwable): String {
         return when (t) {
-            is UnknownHostException -> {
-                context.getString(R.string.error_no_connection)
-            }
+            is UnknownHostException -> context.getString(R.string.error_no_connection)
+            is IllegalStateException -> t.message!!
             else -> context.getString(R.string.error_default)
         }
     }

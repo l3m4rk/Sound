@@ -68,6 +68,9 @@ class AlbumDetailsFragment : DaggerFragment() {
                 is ViewState.Initial -> {
                     //
                 }
+                is ViewState.Info -> {
+                    Snackbar.make(root, it.message, Snackbar.LENGTH_INDEFINITE).show()
+                }
             }
         })
 

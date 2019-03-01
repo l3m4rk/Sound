@@ -1,5 +1,6 @@
 package me.l3m4rk.test
 
+import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import me.l3m4rk.test.di.DaggerAppComponent
@@ -19,6 +20,7 @@ class SoundApp : DaggerApplication() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this)
         }
     }
 

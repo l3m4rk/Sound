@@ -71,6 +71,14 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.20'
     kapt 'com.google.dagger:dagger-android-processor:2.20'
 
+    def room_version = "2.1.0-alpha04"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
     testImplementation 'junit:junit:4.12'
 
     // Optional -- Robolectric environment
@@ -79,6 +87,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.22.0'
 
     testImplementation 'com.google.truth:truth:0.42'
+
+    testImplementation "androidx.room:room-testing:$room_version"
 
     // Core library
     androidTestImplementation 'androidx.test:core:1.1.0'

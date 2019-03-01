@@ -8,5 +8,7 @@ sealed class ViewState<out T> {
     class Progress<out T> : ViewState<T>()
 
     class Initial<out T> : ViewState<T>()
+
+    class Info<out T>(val message: String) : ViewState<T>()
 }
 

@@ -8,14 +8,16 @@ import dagger.android.ContributesAndroidInjector
 import me.l3m4rk.test.data.repositories.AlbumsRepository
 import me.l3m4rk.test.data.repositories.AlbumsRepositoryImpl
 import me.l3m4rk.test.di.common.viewModel
+import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCase
+import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCaseImpl
 import me.l3m4rk.test.domain.albums.search.SearchArtistUseCaseImpl
 import me.l3m4rk.test.domain.albums.search.SearchArtistsUseCase
 import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCase
 import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCaseImpl
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsViewModel
-import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCase
-import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCaseImpl
+import me.l3m4rk.test.presentation.albums.details.SaveAlbumUseCase
+import me.l3m4rk.test.presentation.albums.details.SaveAlbumUseCaseImpl
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
 import me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment
@@ -45,6 +47,9 @@ abstract class AlbumsModule {
     @Binds
     abstract fun bindAlbumDetailsUseCase(useCase: GetAlbumDetailsUseCaseImpl): GetAlbumDetailsUseCase
 
+    @Binds
+    abstract fun bindAlbumSaveUseCase(useCase: SaveAlbumUseCaseImpl): SaveAlbumUseCase
+
     @Module
     companion object {
 
@@ -72,10 +77,11 @@ abstract class AlbumsModule {
         @Reusable
         @JvmStatic
         fun provideAlbumDetailsViewModel(
-            useCase: GetAlbumDetailsUseCase,
+            saveAlbumUseCase: SaveAlbumUseCase,
+            getAlbumDetailsUseCase: GetAlbumDetailsUseCase,
             fragment: AlbumDetailsFragment
         ): AlbumDetailsViewModel {
-            return fragment.viewModel { AlbumDetailsViewModel(useCase) }
+            return fragment.viewModel { AlbumDetailsViewModel(saveAlbumUseCase, getAlbumDetailsUseCase) }
         }
     }
 
