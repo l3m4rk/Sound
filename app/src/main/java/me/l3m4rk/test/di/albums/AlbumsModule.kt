@@ -13,6 +13,9 @@ import me.l3m4rk.test.domain.albums.search.SearchArtistsUseCase
 import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCase
 import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCaseImpl
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment
+import me.l3m4rk.test.presentation.albums.details.AlbumDetailsViewModel
+import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCase
+import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCaseImpl
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
 import me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment
@@ -39,6 +42,9 @@ abstract class AlbumsModule {
     @Binds
     abstract fun bindTopAlbumsUseCase(useCase: GetTopAlbumsUseCaseImpl): GetTopAlbumsUseCase
 
+    @Binds
+    abstract fun bindAlbumDetailsUseCase(useCase: GetAlbumDetailsUseCaseImpl): GetAlbumDetailsUseCase
+
     @Module
     companion object {
 
@@ -60,6 +66,16 @@ abstract class AlbumsModule {
             fragment: TopAlbumsFragment
         ): TopAlbumsViewModel {
             return fragment.viewModel { TopAlbumsViewModel(useCase) }
+        }
+
+        @Provides
+        @Reusable
+        @JvmStatic
+        fun provideAlbumDetailsViewModel(
+            useCase: GetAlbumDetailsUseCase,
+            fragment: AlbumDetailsFragment
+        ): AlbumDetailsViewModel {
+            return fragment.viewModel { AlbumDetailsViewModel(useCase) }
         }
     }
 

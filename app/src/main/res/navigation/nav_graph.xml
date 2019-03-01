@@ -37,5 +37,8 @@
               android:name="me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment"
               android:label="@string/album_details_title"
               tools:layout="@layout/fragment_album_details"
-    />
+    >
+        <argument android:name="artist" app:argType="string"/>
+        <argument android:name="album" app:argType="string"/>
+    </fragment>
 </navigation>

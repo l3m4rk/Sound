@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_top_albums.*
 import me.l3m4rk.test.R
@@ -67,22 +68,23 @@ class TopAlbumsFragment : DaggerFragment() {
             is ViewState.Progress -> {
                 progress.visibility = VISIBLE
                 albumsList.visibility = GONE
-                messageView.visibility = GONE
             }
         }
     }
 
     private fun showError(message: String) {
-        messageView.visibility = VISIBLE
-        messageView.text = message
+        Snackbar.make(root, message, Snackbar.LENGTH_INDEFINITE).setAction(R.string.action_retry) {
+            viewModel.loadTopAlbums(args.name)
+        }.show()
     }
 
     private fun setupList() {
         albumsList.adapter = albumsAdapter
         albumsAdapter.itemClick = {
-            //todo open album details
-            val action = TopAlbumsFragmentDirections.actionAlbumDetails()
-            findNavController().navigate(action)
+            TopAlbumsFragmentDirections.actionAlbumDetails(
+                album = it.name,
+                artist = args.name
+            ).also { findNavController().navigate(it) }
         }
         albumsList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         albumsList.itemAnimator = DefaultItemAnimator()

@@ -15,5 +15,6 @@
     <string name="error_default">Something went wrong!</string>
 
     <string name="album_details_title">Album Details</string>
+    <string name="action_retry">Retry</string>
 
 </resources>

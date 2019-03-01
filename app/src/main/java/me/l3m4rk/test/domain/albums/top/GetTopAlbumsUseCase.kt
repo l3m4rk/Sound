@@ -25,5 +25,6 @@ class GetTopAlbumsUseCaseImpl
             .map { ViewState.Success(it) as ViewState<List<AlbumVO>> }
             .doOnError { Timber.w(it) }
             .onErrorReturn { ViewState.Error(messageFactory.createMessage(it)) }
+            .startWith(ViewState.Progress())
     }
 }

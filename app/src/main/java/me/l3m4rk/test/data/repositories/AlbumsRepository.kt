@@ -7,6 +7,7 @@ import me.l3m4rk.test.data.api.LastFmApi
 import me.l3m4rk.test.data.mappers.AlbumsVOMapper
 import me.l3m4rk.test.data.mappers.ArtistVOMapper
 import me.l3m4rk.test.domain.AlbumDO
+import me.l3m4rk.test.presentation.models.AlbumDetailsVO
 import me.l3m4rk.test.presentation.models.AlbumVO
 import me.l3m4rk.test.presentation.models.ArtistVO
 import javax.inject.Inject
@@ -16,6 +17,8 @@ interface AlbumsRepository {
     fun searchArtists(query: String): Observable<List<ArtistVO>>
 
     fun getTopAlbumsByArtist(artist: String): Observable<List<AlbumVO>>
+
+    fun getAlbumInfo(artist: String, album: String): Observable<AlbumDetailsVO>
 
     fun saveAlbum(id: String): Completable
 
@@ -41,6 +44,23 @@ class AlbumsRepositoryImpl @Inject constructor(
             .observeOn(Schedulers.computation())
             .map { it.topAlbums.album }
             .map(albumsMapper::transform)
+    }
+
+    override fun getAlbumInfo(artist: String, album: String): Observable<AlbumDetailsVO> {
+        return lastFmApi.getAlbumInfo(artist, album)
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .map { it.album }
+            .map { dto ->
+                AlbumDetailsVO(
+                    name = dto.name,
+                    artist = dto.artist,
+                    imageUrl = dto.image.find { it.size == "large" }?.url ?: "",
+                    listeners = "Listeners ${dto.listeners}",
+                    content = dto.wiki?.content ?: "No content",
+                    played = "Played ${dto.playCount} times"
+                )
+            }
     }
 
     override fun saveAlbum(id: String): Completable {

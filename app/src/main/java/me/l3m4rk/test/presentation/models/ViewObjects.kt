@@ -12,3 +12,12 @@ data class AlbumVO(
     val listeners: String,
     val imageUrl: String
 )
+
+data class AlbumDetailsVO(
+    val name: String,
+    val artist: String,
+    val imageUrl: String,
+    val listeners: String,
+    val played: String,
+    val content: String
+)
