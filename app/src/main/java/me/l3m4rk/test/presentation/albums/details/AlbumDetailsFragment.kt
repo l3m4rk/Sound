@@ -26,6 +26,7 @@ class AlbumDetailsFragment : DaggerFragment() {
     @Inject
     lateinit var viewModel: AlbumDetailsViewModel
 
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,10 +57,7 @@ class AlbumDetailsFragment : DaggerFragment() {
                 }
                 is ViewState.Error -> {
                     progress.visibility = GONE
-
-                    Snackbar.make(root, it.message, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.action_retry) { loadAlbumDetails() }
-                        .show()
+                    showError(it.message)
                 }
                 is ViewState.Progress -> {
                     progress.visibility = VISIBLE
@@ -77,6 +75,12 @@ class AlbumDetailsFragment : DaggerFragment() {
         saveButton.setOnClickListener { viewModel.saveAlbum() }
     }
 
+    private fun showError(message: String) {
+        snackbar = Snackbar.make(root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.action_retry) { loadAlbumDetails() }
+        snackbar?.show()
+    }
+
     override fun onStart() {
         super.onStart()
         loadAlbumDetails()
@@ -84,6 +88,11 @@ class AlbumDetailsFragment : DaggerFragment() {
 
     private fun loadAlbumDetails() {
         viewModel.loadAlbumDetails(args.artist, args.album)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        snackbar?.dismiss()
     }
 
 }
