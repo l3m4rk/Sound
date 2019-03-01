@@ -18,11 +18,6 @@ import me.l3m4rk.test.R
 import me.l3m4rk.test.presentation.common.ViewState
 import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 class AlbumDetailsFragment : DaggerFragment() {
 
@@ -47,7 +42,6 @@ class AlbumDetailsFragment : DaggerFragment() {
                 is ViewState.Success -> {
                     progress.visibility = GONE
                     detailsView.visibility = VISIBLE
-
                     with(it.data) {
                         nameView.text = name
                         artistView.text = artist
@@ -69,6 +63,7 @@ class AlbumDetailsFragment : DaggerFragment() {
                 }
                 is ViewState.Progress -> {
                     progress.visibility = VISIBLE
+                    detailsView.visibility = GONE
                 }
                 is ViewState.Initial -> {
                     //
@@ -76,6 +71,7 @@ class AlbumDetailsFragment : DaggerFragment() {
             }
         })
 
+        saveButton.setOnClickListener { viewModel.saveAlbum() }
     }
 
     override fun onStart() {

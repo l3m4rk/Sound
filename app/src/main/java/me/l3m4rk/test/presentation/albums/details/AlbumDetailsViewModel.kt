@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.plusAssign
 import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCase
 import me.l3m4rk.test.presentation.common.ViewState
 import me.l3m4rk.test.presentation.models.AlbumDetailsVO
+import timber.log.Timber
 
 class AlbumDetailsViewModel(
     private val useCase: GetAlbumDetailsUseCase
@@ -29,6 +30,11 @@ class AlbumDetailsViewModel(
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
+    }
+
+    fun saveAlbum() {
+        //TODO save album to DB
+        Timber.i("Save item")
     }
 
 }

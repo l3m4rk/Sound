@@ -81,7 +81,7 @@ class TopAlbumsFragment : DaggerFragment() {
     private fun setupList() {
         albumsList.adapter = albumsAdapter
         albumsAdapter.itemClick = {
-            TopAlbumsFragmentDirections.actionAlbumDetails(
+            TopAlbumsFragmentDirections.albumDetailsFragment(
                 album = it.name,
                 artist = args.name
             ).also { findNavController().navigate(it) }
