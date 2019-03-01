@@ -6,15 +6,12 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
-import me.l3m4rk.test.data.repositories.AlbumsRepository
-import me.l3m4rk.test.presentation.common.ErrorMessageFactory
+import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCase
 import me.l3m4rk.test.presentation.common.ViewState
 import me.l3m4rk.test.presentation.models.AlbumVO
-import timber.log.Timber
 
 class TopAlbumsViewModel(
-    private val repository: AlbumsRepository,
-    private val messageFactory: ErrorMessageFactory
+    private val useCase: GetTopAlbumsUseCase
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
@@ -24,14 +21,9 @@ class TopAlbumsViewModel(
         get() = _screenState
 
     fun loadTopAlbums(artist: String) {
-        disposables += repository.getTopAlbumsByArtist(artist)
-            .map { ViewState.Success(it) as ViewState<List<AlbumVO>> }
-            .doOnError { Timber.w(it) }
-            .onErrorReturn { ViewState.Error(messageFactory.createMessage(it)) }
+        disposables += useCase.getTopAlbumsByArtist(artist)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                _screenState.value = it
-            }
+            .subscribe { _screenState.value = it }
     }
 
     override fun onCleared() {

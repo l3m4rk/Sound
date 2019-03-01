@@ -10,12 +10,13 @@ import me.l3m4rk.test.data.repositories.AlbumsRepositoryImpl
 import me.l3m4rk.test.di.common.viewModel
 import me.l3m4rk.test.domain.albums.search.SearchArtistUseCaseImpl
 import me.l3m4rk.test.domain.albums.search.SearchArtistsUseCase
+import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCase
+import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCaseImpl
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
 import me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment
 import me.l3m4rk.test.presentation.albums.top.TopAlbumsViewModel
-import me.l3m4rk.test.presentation.common.ErrorMessageFactory
 
 @Module
 abstract class AlbumsModule {
@@ -35,6 +36,9 @@ abstract class AlbumsModule {
     @Binds
     abstract fun bindSearchArtistsUseCase(impl: SearchArtistUseCaseImpl): SearchArtistsUseCase
 
+    @Binds
+    abstract fun bindTopAlbumsUseCase(useCase: GetTopAlbumsUseCaseImpl): GetTopAlbumsUseCase
+
     @Module
     companion object {
 
@@ -52,11 +56,10 @@ abstract class AlbumsModule {
         @Reusable
         @JvmStatic
         fun provideTopAlbumsViewModel(
-            repository: AlbumsRepository,
-            messageFactory: ErrorMessageFactory,
+            useCase: GetTopAlbumsUseCase,
             fragment: TopAlbumsFragment
         ): TopAlbumsViewModel {
-            return fragment.viewModel { TopAlbumsViewModel(repository, messageFactory) }
+            return fragment.viewModel { TopAlbumsViewModel(useCase) }
         }
     }
 
