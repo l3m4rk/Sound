@@ -1,7 +1,7 @@
 package me.l3m4rk.test.data.mappers
 
 import me.l3m4rk.test.data.models.AlbumDTO
-import me.l3m4rk.test.presentation.albums.top.AlbumVO
+import me.l3m4rk.test.presentation.models.AlbumVO
 import javax.inject.Inject
 
 class AlbumsVOMapper

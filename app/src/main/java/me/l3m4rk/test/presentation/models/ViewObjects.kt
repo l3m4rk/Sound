@@ -6,3 +6,9 @@ data class ArtistVO(
     val listeners: Long,
     val imageUrl: String
 )
+
+data class AlbumVO(
+    val name: String,
+    val listeners: String,
+    val imageUrl: String
+)

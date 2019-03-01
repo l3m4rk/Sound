@@ -16,6 +16,7 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_top_albums.*
 import me.l3m4rk.test.R
 import me.l3m4rk.test.presentation.common.ViewState
+import me.l3m4rk.test.presentation.models.AlbumVO
 import javax.inject.Inject
 
 class TopAlbumsFragment : DaggerFragment() {

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_album.view.*
 import me.l3m4rk.test.R
+import me.l3m4rk.test.presentation.models.AlbumVO
 import javax.inject.Inject
 
 class AlbumsAdapter

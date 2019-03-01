@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.plusAssign
 import me.l3m4rk.test.data.repositories.AlbumsRepository
 import me.l3m4rk.test.presentation.common.ErrorMessageFactory
 import me.l3m4rk.test.presentation.common.ViewState
+import me.l3m4rk.test.presentation.models.AlbumVO
 import timber.log.Timber
 
 class TopAlbumsViewModel(
@@ -39,9 +40,3 @@ class TopAlbumsViewModel(
     }
 
 }
-
-data class AlbumVO(
-    val name: String,
-    val listeners: String,
-    val imageUrl: String
-)

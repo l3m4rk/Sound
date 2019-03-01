@@ -7,7 +7,7 @@ import me.l3m4rk.test.data.api.LastFmApi
 import me.l3m4rk.test.data.mappers.AlbumsVOMapper
 import me.l3m4rk.test.data.mappers.ArtistVOMapper
 import me.l3m4rk.test.domain.AlbumDO
-import me.l3m4rk.test.presentation.albums.top.AlbumVO
+import me.l3m4rk.test.presentation.models.AlbumVO
 import me.l3m4rk.test.presentation.models.ArtistVO
 import javax.inject.Inject
 
