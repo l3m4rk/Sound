@@ -10,14 +10,18 @@ import me.l3m4rk.test.data.repositories.AlbumsRepositoryImpl
 import me.l3m4rk.test.di.common.viewModel
 import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCase
 import me.l3m4rk.test.domain.albums.details.GetAlbumDetailsUseCaseImpl
+import me.l3m4rk.test.domain.albums.details.SaveAlbumUseCase
+import me.l3m4rk.test.domain.albums.details.SaveAlbumUseCaseImpl
 import me.l3m4rk.test.domain.albums.search.SearchArtistUseCaseImpl
 import me.l3m4rk.test.domain.albums.search.SearchArtistsUseCase
 import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCase
 import me.l3m4rk.test.domain.albums.top.GetTopAlbumsUseCaseImpl
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsFragment
 import me.l3m4rk.test.presentation.albums.details.AlbumDetailsViewModel
-import me.l3m4rk.test.presentation.albums.details.SaveAlbumUseCase
-import me.l3m4rk.test.presentation.albums.details.SaveAlbumUseCaseImpl
+import me.l3m4rk.test.presentation.albums.saved.SavedAlbumsFragment
+import me.l3m4rk.test.domain.albums.saved.SavedAlbumsUseCase
+import me.l3m4rk.test.domain.albums.saved.SavedAlbumsUseCaseImpl
+import me.l3m4rk.test.presentation.albums.saved.SavedAlbumsViewModel
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsFragment
 import me.l3m4rk.test.presentation.albums.search.SearchArtistsViewModel
 import me.l3m4rk.test.presentation.albums.top.TopAlbumsFragment
@@ -35,8 +39,14 @@ abstract class AlbumsModule {
     @ContributesAndroidInjector
     abstract fun bindAlbumDetailsFragment(): AlbumDetailsFragment
 
+    @ContributesAndroidInjector
+    abstract fun bindSavedAlbumsFragment(): SavedAlbumsFragment
+
     @Binds
     abstract fun bindRepository(impl: AlbumsRepositoryImpl): AlbumsRepository
+
+    @Binds
+    abstract fun bindGetSavedAlbummsUseCase(useCase: SavedAlbumsUseCaseImpl): SavedAlbumsUseCase
 
     @Binds
     abstract fun bindSearchArtistsUseCase(impl: SearchArtistUseCaseImpl): SearchArtistsUseCase
@@ -52,6 +62,16 @@ abstract class AlbumsModule {
 
     @Module
     companion object {
+
+        @Provides
+        @Reusable
+        @JvmStatic
+        fun provideSavedAlbumsViewModel(
+            fragment: SavedAlbumsFragment,
+            useCase: SavedAlbumsUseCase
+        ): SavedAlbumsViewModel {
+            return fragment.viewModel { SavedAlbumsViewModel(useCase) }
+        }
 
         @Provides
         @Reusable

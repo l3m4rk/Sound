@@ -2,6 +2,7 @@
     <string name="app_name">Sound</string>
 
     <string name="saved_albums_title">Saved Albums</string>
+    <string name="saved_albums_no_data">You have no saved albums</string>
 
     <string name="search_artists_title">Search artists</string>
     <string name="search_artists_button_text">Search</string>

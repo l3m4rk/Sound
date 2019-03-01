@@ -10,7 +10,8 @@ data class ArtistVO(
 data class AlbumVO(
     val name: String,
     val listeners: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val artist: String? = null
 )
 
 data class AlbumDetailsVO(
