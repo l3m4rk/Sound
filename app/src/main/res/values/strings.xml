@@ -15,6 +15,9 @@
     <string name="error_default">Something went wrong!</string>
 
     <string name="album_details_title">Album Details</string>
+    <string name="album_details_listeners_format">Listeners %1$d</string>
+    <string name="album_details_no_content">No content</string>
+    <string name="album_details_played_format">"Played %1$d times"</string>
     <string name="action_retry">Retry</string>
 
 </resources>

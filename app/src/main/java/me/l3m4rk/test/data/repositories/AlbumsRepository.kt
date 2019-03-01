@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import me.l3m4rk.test.data.api.LastFmApi
+import me.l3m4rk.test.data.mappers.AlbumDetailsVOMapper
 import me.l3m4rk.test.data.mappers.AlbumsVOMapper
 import me.l3m4rk.test.data.mappers.ArtistVOMapper
 import me.l3m4rk.test.domain.AlbumDO
@@ -28,7 +29,9 @@ interface AlbumsRepository {
 class AlbumsRepositoryImpl @Inject constructor(
     private val lastFmApi: LastFmApi,
     private val artistMapper: ArtistVOMapper,
-    private val albumsMapper: AlbumsVOMapper
+    private val albumsMapper: AlbumsVOMapper,
+    private val albumDetailsMapper: AlbumDetailsVOMapper
+
 ) : AlbumsRepository {
     override fun searchArtists(query: String): Observable<List<ArtistVO>> {
         return lastFmApi.searchArtists(query)
@@ -51,16 +54,7 @@ class AlbumsRepositoryImpl @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .map { it.album }
-            .map { dto ->
-                AlbumDetailsVO(
-                    name = dto.name,
-                    artist = dto.artist,
-                    imageUrl = dto.image.find { it.size == "large" }?.url ?: "",
-                    listeners = "Listeners ${dto.listeners}",
-                    content = dto.wiki?.content ?: "No content",
-                    played = "Played ${dto.playCount} times"
-                )
-            }
+            .map(albumDetailsMapper::transform)
     }
 
     override fun saveAlbum(id: String): Completable {
